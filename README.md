@@ -1,7 +1,7 @@
 NAME
 ====
 
-Graphics::TinyTIFF - blah blah blah
+Graphics::TinyTIFF - Perl6 bindings to TinyTIFF
 
 SYNOPSIS
 ========
@@ -12,11 +12,6 @@ DESCRIPTION
 ===========
 
 Graphics::TinyTIFF is ...
-
-AUTHOR
-======
-
-ryn1x <ryn1x@tutanota.com>
 
 COPYRIGHT AND LICENSE
 =====================
