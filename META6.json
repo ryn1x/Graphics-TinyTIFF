@@ -1,0 +1,19 @@
+{
+  "authors" : [
+    "ryn1x"
+  ],
+  "build-depends" : [ ],
+  "depends" : [ ],
+  "description" : "blah blah blah",
+  "license" : "Artistic-2.0",
+  "name" : "Graphics::TinyTIFF",
+  "perl" : "6.c",
+  "provides" : {
+    "Graphics::TinyTIFF" : "lib/Graphics/TinyTIFF.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "",
+  "tags" : [ ],
+  "test-depends" : [ ],
+  "version" : "0.0.1"
+}
