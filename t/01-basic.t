@@ -2,6 +2,6 @@ use v6.c;
 use Test;
 use Graphics::TinyTIFF;
 
-pass "replace me";
+plan 1;
 
-done-testing;
+lives-ok { tiff-open('../TinyTIFF/test/tinytiff_reader_test/cell.tif') };
