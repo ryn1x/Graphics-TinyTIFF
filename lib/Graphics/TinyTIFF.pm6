@@ -120,7 +120,7 @@ sub TinyTIFFReader_getImageDescription( TinyTIFFReaderFile is rw )
 sub TinyTIFFReader_getLastError( TinyTIFFReaderFile is rw )
     returns str is native('tinytiff') is export { * }
 
-sub TinyTIFFReader_getSampleData( TinyTIFFReaderFile is rw, Blob is rw, uint16 )
+sub TinyTIFFReader_getSampleData( TinyTIFFReaderFile is rw, Buf is rw, uint16 )
     returns int32 is native('tinytiff') is export { * }
 
 sub TinyTIFFReader_getSampleFormat( TinyTIFFReaderFile is rw )
