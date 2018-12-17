@@ -34,7 +34,7 @@ class TinyTIFFReaderFrame is repr('CStruct') is export {
     has uint16         $.planarconfiguration;
     has uint16         $.sampleformat;
     has uint32         $.imagelength;
-	has str            $.description;
+    has str            $.description;
 }
 
 #struct TinyTIFFReaderFile {
