@@ -17,8 +17,8 @@ unit module Graphics::TinyTIFF:ver<0.0.1>;
     #uint16_t planarconfiguration;
     #uint16_t sampleformat;
     #uint32_t imagelength;
-	
-	#char* description;
+
+    #char* description;
 #};
 
 class TinyTIFFReaderFrame is repr('CStruct') is export {
