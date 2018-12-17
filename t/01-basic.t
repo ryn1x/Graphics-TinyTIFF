@@ -3,7 +3,7 @@ use Test;
 use Graphics::TinyTIFF;
 
 my TinyTIFFReaderFile $tiff;
-my $sample-data = buf8.allocate(191*159);
+my $sample-data := buf8.allocate(191*159);
 
 plan 7;
 
