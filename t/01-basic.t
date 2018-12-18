@@ -9,14 +9,14 @@ my $height;
 my $size;
 my @sample-data;
 
-plan 8;
+plan 9;
 
 lives-ok { $tiff = TinyTIFFReader_open('../TinyTIFF/test/tinytiff_reader_test/cell.tif') };
 lives-ok { TinyTIFFReader_countFrames($tiff) };
 lives-ok { TinyTIFFReader_getBitsPerSample($tiff, 0) };
 lives-ok { $width = TinyTIFFReader_getWidth($tiff) };
 lives-ok { $height = TinyTIFFReader_getHeight($tiff) };
-#lives-ok { TinyTIFFReader_getImageDescription($tiff) }; // TODO fix this
+lives-ok { dd TinyTIFFReader_getImageDescription($tiff) };
 lives-ok { TinyTIFFReader_getLastError($tiff) };
 
 $size = $width * $height;

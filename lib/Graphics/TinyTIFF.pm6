@@ -115,7 +115,7 @@ sub TinyTIFFReader_getHeight( TinyTIFFReaderFile is rw )
     returns uint32 is native('tinytiff') is export { * }
 
 sub TinyTIFFReader_getImageDescription( TinyTIFFReaderFile is rw )
-    returns Pointer is native('tinytiff') is export { * }
+    returns str is native('tinytiff') is export { * }
 
 sub TinyTIFFReader_getLastError( TinyTIFFReaderFile is rw )
     returns str is native('tinytiff') is export { * }
