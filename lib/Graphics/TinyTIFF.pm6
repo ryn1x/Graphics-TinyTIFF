@@ -102,66 +102,96 @@ class TinyTIFFFile is repr('CStruct') is export {
     has uint8         $.byteorder;
 }
 
+#| close the tiff file
 sub TinyTIFFReader_close( TinyTIFFReaderFile is rw )
     is native('tinytiff') is export { * }
 
+#| return number of frames
 sub TinyTIFFReader_countFrames( TinyTIFFReaderFile is rw )
     returns uint32 is native('tinytiff') is export { * }
 
+#| return bits per sample of current frame
 sub TinyTIFFReader_getBitsPerSample( TinyTIFFReaderFile is rw, int32 )
     returns uint16 is native('tinytiff') is export { * }
 
+#| return height of current frame
 sub TinyTIFFReader_getHeight( TinyTIFFReaderFile is rw )
     returns uint32 is native('tinytiff') is export { * }
 
+#| return image descrition of current frame
 sub TinyTIFFReader_getImageDescription( TinyTIFFReaderFile is rw )
     returns str is native('tinytiff') is export { * }
 
+#| return last error message
 sub TinyTIFFReader_getLastError( TinyTIFFReaderFile is rw )
     returns str is native('tinytiff') is export { * }
 
+#| read data from current frame into supplied buffer
 sub TinyTIFFReader_getSampleData( TinyTIFFReaderFile is rw, Blob is rw, uint16 )
     returns int32 is native('tinytiff') is export { * }
 
+#| return sample format of current frame
 sub TinyTIFFReader_getSampleFormat( TinyTIFFReaderFile is rw )
     returns uint16 is native('tinytiff') is export { * }
 
+#| return samples per pixel of current frame
 sub TinyTIFFReader_getSamplesPerPixel( TinyTIFFReaderFile is rw )
     returns uint16 is native('tinytiff') is export { * }
 
+#| return width of current frame
 sub TinyTIFFReader_getWidth( TinyTIFFReaderFile is rw )
     returns uint32 is native('tinytiff') is export { * }
 
+#| retun non-zero if another frame exists
 sub TinyTIFFReader_hasNext( TinyTIFFReaderFile is rw )
     returns int32 is native('tinytiff') is export { * }
 
-sub TinyTIFFReader_open( str is rw )
+#| open tiff file for reading
+sub TinyTIFFReader_open( str $filename is rw )
     returns TinyTIFFReaderFile is native('tinytiff') is export { * }
 
+#| read the next frame from a multi-frame tiff
 sub TinyTIFFReader_readNext( TinyTIFFReaderFile is rw )
     returns int32 is native('tinytiff') is export { * }
 
+#| return non-zero if no error in last function call
 sub TinyTIFFReader_success( TinyTIFFReaderFile is rw )
     returns int32 is native('tinytiff') is export { * }
 
+#| return non-zero if error in last function call
 sub TinyTIFFReader_wasError( TinyTIFFReaderFile is rw )
     returns int32 is native('tinytiff') is export { * }
 
-sub TinyTIFFWriter_close( TinyTIFFFile is rw, str is rw )
+#| close the tiff and write image description to first frame
+sub TinyTIFFWriter_close( TinyTIFFFile is rw, str $image-description is rw )
     is native('tinytiff') is export { * }
 
+#| get max size for image descrition
 sub TinyTIFFWriter_getMaxDescriptionTextSize()
     returns int32 is native('tinytiff') is export { * }
-
-sub TinyTIFFWriter_open( str is rw, uint16, uint32, uint32 )
+  
+#| create a new tiff file
+sub TinyTIFFWriter_open( str $filename is rw, uint16 $bits-per-sample, uint32 $width, uint32 $height )
     returns TinyTIFFFile is rw is native('tinytiff') is export { * }
 
-sub TinyTIFFWriter_writeImageDouble( TinyTIFFFile is rw, CArray[num64] is rw )
-    is native('tinytiff') is export { * }
+#| writes row-major image data to a tiff file
+sub TinyTIFFWriter_writeImage( TinyTIFFFile $tiff, Blob $image-data ) {
+    given $image-data {
+        when buf32 { TinyTIFFWriter_writeImageDouble: $tiff, $image-data }
+        when buf64 { TinyTIFFWriter_writeImageDouble: $tiff, $image-data }
+        default    { TinyTIFFWriter_writeImageDouble: $tiff, $image-data }
+    }
+}
 
-sub TinyTIFFWriter_writeImageFloat( TinyTIFFFile is rw, CArray[num32] is rw )
-    is native('tinytiff') is export { * }
+# for num64
+sub TinyTIFFWriter_writeImageDouble( TinyTIFFFile is rw, Blob is rw )
+    is native('tinytiff') { * }
 
-sub TinyTIFFWriter_writeImageVoid( TinyTIFFFile is rw, void is rw )
-    is native('tinytiff') is export { * }
+# for num32
+sub TinyTIFFWriter_writeImageFloat( TinyTIFFFile is rw, Blob is rw )
+    is native('tinytiff') { * }
+
+# for other
+sub TinyTIFFWriter_writeImageVoid( TinyTIFFFile is rw, Blob is rw )
+    is native('tinytiff') { * }
 
