@@ -3,12 +3,12 @@ NAME
 
 Graphics::TinyTIFF - Perl6 bindings to [a slightly modified] TinyTIFF
 
+THIS MODULE IS IN EARLY DEVELOPMENT AND HAS ONLY BEEN TESTED TO WORK ON MY MACHINE =)
+
 DEPENDANCIES
 ============
 
-My forked version of TinyTiff.
-
-This will build and install automatically on unix, but it is also incuded in this repo as a submodule in the TinyTiff dir incase you run into problems and need to build/install manually.
+My forked version of TinyTiff. It is incuded in this repo as a submodule in the TinyTiff dir and will need to be built/installed manually.
 
 INSTALL
 ======
