@@ -1,6 +1,6 @@
 {
   "authors" : [
-    "ryn1x"
+    "github:ryn1x"
   ],
   "build-depends" : [ ],
   "depends" : [ ],
@@ -12,8 +12,12 @@
     "Graphics::TinyTIFF" : "lib/Graphics/TinyTIFF.pm6"
   },
   "resources" : [ ],
-  "source-url" : "",
-  "tags" : [ ],
+  "source-url" : "https://github.com/ryn1x/Graphics-TinyTIFF.git",
+  "tags" : [
+      "Graphics",
+      "Image",
+      "Tiff"
+  ],
   "test-depends" : [ ],
   "version" : "0.0.1"
 }
