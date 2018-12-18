@@ -3,6 +3,9 @@ use Test;
 use NativeCall;
 use Graphics::TinyTIFF;
 
+my $dir = $?FILE.IO.dirname;
+my $in = $dir.IO.add('cell.tif').Str;
+my $out = $dir.IO.add('cell2.tif').Str;
 my Pointer $tiff-r;
 my $tiff-w;
 my $width;
@@ -13,7 +16,7 @@ my @sample-data;
 
 plan 20;
 
-lives-ok { $tiff-r = TinyTIFFReader_open('../TinyTIFF/test/tinytiff_reader_test/cell.tif') };
+lives-ok { $tiff-r = TinyTIFFReader_open($in) };
 lives-ok { TinyTIFFReader_countFrames($tiff-r) };
 lives-ok { $bits = TinyTIFFReader_getBitsPerSample($tiff-r, 0) };
 lives-ok { $width = TinyTIFFReader_getWidth($tiff-r) };
@@ -34,7 +37,7 @@ lives-ok { TinyTIFFReader_wasError($tiff-r) };
 lives-ok { TinyTIFFReader_readNext($tiff-r) };
 lives-ok { TinyTIFFReader_close($tiff-r) };
 
-lives-ok { $tiff-w = TinyTIFFWriter_open('../TinyTIFF/test/tinytiff_reader_test/cell2.tif', $bits, $width, $height) };
+lives-ok { $tiff-w = TinyTIFFWriter_open($out, $bits, $width, $height) };
 lives-ok { TinyTIFFWriter_getMaxDescriptionTextSize() };
 lives-ok { TinyTIFFWriter_writeImageVoid( $tiff-w, @sample-data) };
 lives-ok { TinyTIFFWriter_close( $tiff-w, 'test') };
