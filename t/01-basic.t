@@ -3,27 +3,38 @@ use Test;
 use NativeCall;
 use Graphics::TinyTIFF;
 
-my TinyTIFFReaderFile $tiff;
+my Pointer $tiff-r;
+my $tiff-w;
 my $width;
 my $height;
 my $size;
+my $bits;
 my @sample-data;
 
-plan 9;
+plan 20;
 
-lives-ok { $tiff = TinyTIFFReader_open('../TinyTIFF/test/tinytiff_reader_test/cell.tif') };
-lives-ok { TinyTIFFReader_countFrames($tiff) };
-lives-ok { TinyTIFFReader_getBitsPerSample($tiff, 0) };
-lives-ok { $width = TinyTIFFReader_getWidth($tiff) };
-lives-ok { $height = TinyTIFFReader_getHeight($tiff) };
-lives-ok { dd TinyTIFFReader_getImageDescription($tiff) };
-lives-ok { TinyTIFFReader_getLastError($tiff) };
+lives-ok { $tiff-r = TinyTIFFReader_open('../TinyTIFF/test/tinytiff_reader_test/cell.tif') };
+lives-ok { TinyTIFFReader_countFrames($tiff-r) };
+lives-ok { $bits = TinyTIFFReader_getBitsPerSample($tiff-r, 0) };
+lives-ok { $width = TinyTIFFReader_getWidth($tiff-r) };
+lives-ok { $height = TinyTIFFReader_getHeight($tiff-r) };
+lives-ok { TinyTIFFReader_getImageDescription($tiff-r) };
+lives-ok { TinyTIFFReader_getLastError($tiff-r) };
 
 $size = $width * $height;
 @sample-data := buf8.allocate($size);
 
-lives-ok { TinyTIFFReader_getSampleData($tiff, @sample-data, 0) };
-lives-ok { TinyTIFFReader_close($tiff) };
+lives-ok { TinyTIFFReader_getSampleData($tiff-r, @sample-data, 0) };
+lives-ok { TinyTIFFReader_getSampleFormat($tiff-r) };
+lives-ok { TinyTIFFReader_getSamplesPerPixel($tiff-r) };
+lives-ok { TinyTIFFReader_getWidth($tiff-r) };
+lives-ok { TinyTIFFReader_hasNext($tiff-r) };
+lives-ok { TinyTIFFReader_success($tiff-r) };
+lives-ok { TinyTIFFReader_wasError($tiff-r) };
+lives-ok { TinyTIFFReader_readNext($tiff-r) };
+lives-ok { TinyTIFFReader_close($tiff-r) };
 
-#dd @sample-data;
-
+lives-ok { $tiff-w = TinyTIFFWriter_open('../TinyTIFF/test/tinytiff_reader_test/cell2.tif', $bits, $width, $height) };
+lives-ok { TinyTIFFWriter_getMaxDescriptionTextSize() };
+lives-ok { TinyTIFFWriter_writeImageVoid( $tiff-w, @sample-data) };
+lives-ok { TinyTIFFWriter_close( $tiff-w, 'test') };
