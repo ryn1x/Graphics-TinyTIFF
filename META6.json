@@ -4,7 +4,7 @@
   ],
   "build-depends" : [ ],
   "depends" : [ ],
-  "description" : "Perl6 binding to TinyTIFF",
+  "description" : "Perl6 bindings to TinyTIFF",
   "license" : "Artistic-2.0",
   "name" : "Graphics::TinyTIFF",
   "perl" : "6.c",
