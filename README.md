@@ -127,8 +127,8 @@ open tiff file for reading, returns tiff pointer
 ```perl6
 sub TinyTIFFReader_getSampleData(
     NativeCall::Types::Pointer $tiff,
-    Blob $ is rw,
-    uint16 $
+    Blob $buf is rw,
+    uint16 $sample
 ) returns int32
 ```
 
@@ -149,7 +149,7 @@ close the tiff file
 ```perl6
 sub TinyTIFFReader_getBitsPerSample(
     NativeCall::Types::Pointer $tiff,
-    int32 $sample-num
+    int32 $sample
 ) returns uint16
 ```
 
@@ -329,6 +329,7 @@ sub TinyTIFFWriter_close(
 ```
 
 close the tiff and write image description to first frame
+
 
 
 COPYRIGHT AND LICENSE
