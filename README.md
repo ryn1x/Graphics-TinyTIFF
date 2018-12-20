@@ -37,7 +37,80 @@ zef install Graphics::TinyTIFF
 SYNOPSIS
 ========
 
-    use Graphics::TinyTIFF;
+```
+#!/usr/bin/env perl6
+
+use v6.c;
+use NativeCall;
+use Graphics::TinyTIFF;
+
+########## reader ##########
+
+my $tiff = TinyTIFFReader_open('cell.tif');
+my $frames = TinyTIFFReader_countFrames($tiff);
+my $bits = TinyTIFFReader_getBitsPerSample($tiff, 0);
+my $width = TinyTIFFReader_getWidth($tiff);
+my $height = TinyTIFFReader_getHeight($tiff);
+my $description = TinyTIFFReader_getImageDescription($tiff);
+
+my $size = $width * $height;
+my @sample-data := buf8.allocate($size);
+
+TinyTIFFReader_getSampleData($tiff, @sample-data, 0);
+
+# you now have @sample-data for the current frame
+# and can manipulate it as you wish!
+
+my $format = TinyTIFFReader_getSampleFormat($tiff);
+my $samples-per-pixel = TinyTIFFReader_getSamplesPerPixel($tiff);
+my $has-next = ?TinyTIFFReader_hasNext($tiff);
+TinyTIFFReader_readNext($tiff) if $has-next;
+my $success = ?TinyTIFFReader_success($tiff);
+my $was-error = ?TinyTIFFReader_wasError($tiff);
+my $last-error = TinyTIFFReader_getLastError($tiff) if $was-error;
+TinyTIFFReader_close($tiff);
+
+########## writer ##########
+
+my $tiff-file = TinyTIFFWriter_open('cell2.tif', $bits, $width, $height);
+my $description-size = TinyTIFFWriter_getMaxDescriptionTextSize();
+TinyTIFFWriter_writeImageVoid( $tiff-file, @sample-data);
+TinyTIFFWriter_close( $tiff-file, 'test');
+
+say( qq:to/END/ );
+    frames            -> $frames
+    bits              -> $bits
+    width             -> $width
+    height            -> $height
+    description       -> $description
+    format            -> $format
+    samples per pixel -> $samples-per-pixel
+    has next?         -> $has-next
+    success?          -> $success
+    was error?        -> $was-error
+    description size  -> $description-size
+    END
+
+```
+
+output:
+```
+frames            -> 1
+bits              -> 8
+width             -> 191
+height            -> 159
+description       -> image description
+format            -> 1
+samples per pixel -> 1
+has next?         -> False
+success?          -> True
+was error?        -> False
+description size  -> 1024
+```
+
+
+SUBROUTINES
+========
 
 ### sub TinyTIFFReader_open
 
@@ -47,13 +120,13 @@ sub TinyTIFFReader_open(
 ) returns NativeCall::Types::Pointer
 ```
 
-open tiff file for reading
+open tiff file for reading, returns tiff pointer
 
 ### sub TinyTIFFReader_getSampleData
 
 ```perl6
 sub TinyTIFFReader_getSampleData(
-    NativeCall::Types::Pointer $,
+    NativeCall::Types::Pointer $tiff,
     Blob $ is rw,
     uint16 $
 ) returns int32
@@ -65,7 +138,7 @@ read data from current frame into supplied buffer
 
 ```perl6
 sub TinyTIFFReader_close(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns Mu
 ```
 
@@ -75,8 +148,8 @@ close the tiff file
 
 ```perl6
 sub TinyTIFFReader_getBitsPerSample(
-    NativeCall::Types::Pointer $,
-    int32 $
+    NativeCall::Types::Pointer $tiff,
+    int32 $sample-num
 ) returns uint16
 ```
 
@@ -86,7 +159,7 @@ return bits per sample of current frame
 
 ```perl6
 sub TinyTIFFReader_getWidth(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns uint32
 ```
 
@@ -96,7 +169,7 @@ return width of current frame
 
 ```perl6
 sub TinyTIFFReader_getHeight(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns uint32
 ```
 
@@ -106,7 +179,7 @@ return height of current frame
 
 ```perl6
 sub TinyTIFFReader_countFrames(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns uint32
 ```
 
@@ -116,7 +189,7 @@ return number of frames
 
 ```perl6
 sub TinyTIFFReader_getSampleFormat(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns uint16
 ```
 
@@ -126,7 +199,7 @@ return sample format of current frame
 
 ```perl6
 sub TinyTIFFReader_getSamplesPerPixel(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns uint16
 ```
 
@@ -136,7 +209,7 @@ return samples per pixel of current frame
 
 ```perl6
 sub TinyTIFFReader_getImageDescription(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns str
 ```
 
@@ -146,7 +219,7 @@ return image descrition of current frame
 
 ```perl6
 sub TinyTIFFReader_hasNext(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns int32
 ```
 
@@ -156,7 +229,7 @@ retun non-zero if another frame exists
 
 ```perl6
 sub TinyTIFFReader_readNext(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns int32
 ```
 
@@ -166,7 +239,7 @@ read the next frame from a multi-frame tiff
 
 ```perl6
 sub TinyTIFFReader_success(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns int32
 ```
 
@@ -176,7 +249,7 @@ return non-zero if no error in last function call
 
 ```perl6
 sub TinyTIFFReader_wasError(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns int32
 ```
 
@@ -186,7 +259,7 @@ return non-zero if error in last function call
 
 ```perl6
 sub TinyTIFFReader_getLastError(
-    NativeCall::Types::Pointer $
+    NativeCall::Types::Pointer $tiff
 ) returns str
 ```
 
@@ -203,7 +276,7 @@ sub TinyTIFFWriter_open(
 ) returns NativeCall::Types::Pointer
 ```
 
-create a new tiff file
+create a new tiff file, returns tiff-file pointer
 
 ### sub TinyTIFFWriter_getMaxDescriptionTextSize
 
@@ -217,7 +290,7 @@ get max size for image descrition
 
 ```perl6
 sub TinyTIFFWriter_writeImageDouble(
-    NativeCall::Types::Pointer $,
+    NativeCall::Types::Pointer $tiff-file,
     Blob $ is rw
 ) returns Mu
 ```
@@ -228,7 +301,7 @@ writes row-major image data to a tiff file
 
 ```perl6
 sub TinyTIFFWriter_writeImageFloat(
-    NativeCall::Types::Pointer $,
+    NativeCall::Types::Pointer $tiff-file,
     Blob $ is rw
 ) returns Mu
 ```
@@ -239,7 +312,7 @@ writes row-major image data to a tiff file
 
 ```perl6
 sub TinyTIFFWriter_writeImageVoid(
-    NativeCall::Types::Pointer $,
+    NativeCall::Types::Pointer $tiff-file,
     Blob $ is rw
 ) returns Mu
 ```
@@ -250,12 +323,13 @@ writes row-major image data to a tiff file
 
 ```perl6
 sub TinyTIFFWriter_close(
-    NativeCall::Types::Pointer $,
+    NativeCall::Types::Pointer $tiff-file,
     str $image-description is rw
 ) returns Mu
 ```
 
 close the tiff and write image description to first frame
+
 
 COPYRIGHT AND LICENSE
 =====================
