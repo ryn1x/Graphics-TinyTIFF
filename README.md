@@ -3,12 +3,30 @@ NAME
 
 Graphics::TinyTIFF - Perl6 bindings to [a slightly modified] TinyTIFF
 
-THIS MODULE IS IN EARLY DEVELOPMENT AND HAS ONLY BEEN TESTED TO WORK ON MY MACHINE =)
-
 DEPENDANCIES
 ============
 
-My forked version of TinyTiff. It is incuded in this repo as a submodule in the TinyTiff dir and will need to be built/installed manually.
+Unix
+```
+git clone https://github.com/ryn1x/TinyTIFF.git
+cd TinyTIFF
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+
+Windows
+```
+git clone https://github.com/ryn1x/TinyTIFF.git
+cd TinyTIFF
+mkdir build
+cd build
+cmake ..
+cmake -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE -DBUILD_SHARED_LIBS=TRUE -G "Visual Studio 15 2017 win64" ..
+build generated ".sln" file with visual studio
+```
 
 INSTALL
 ======
