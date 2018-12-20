@@ -77,7 +77,7 @@ my $description-size = TinyTIFFWriter_getMaxDescriptionTextSize();
 TinyTIFFWriter_writeImageVoid( $tiff-file, @sample-data);
 TinyTIFFWriter_close( $tiff-file, 'test');
 
-say( qq:to/END/ );
+print qq:to/END/;
     frames            -> $frames
     bits              -> $bits
     width             -> $width
