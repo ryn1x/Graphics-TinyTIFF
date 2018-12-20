@@ -6,7 +6,7 @@ Graphics::TinyTIFF - Perl6 bindings to [a slightly modified] TinyTIFF
 DEPENDANCIES
 ============
 
-Unix
+##Unix
 ```
 git clone https://github.com/ryn1x/TinyTIFF.git
 cd TinyTIFF
@@ -17,7 +17,7 @@ make
 sudo make install
 ```
 
-Windows
+##Windows
 ```
 git clone https://github.com/ryn1x/TinyTIFF.git
 cd TinyTIFF
