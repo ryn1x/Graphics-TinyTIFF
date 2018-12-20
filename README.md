@@ -93,7 +93,7 @@ say( qq:to/END/ );
 
 ```
 
-output:
+Output:
 ```
 frames            -> 1
 bits              -> 8
