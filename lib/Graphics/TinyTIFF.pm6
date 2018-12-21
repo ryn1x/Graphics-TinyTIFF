@@ -1,7 +1,7 @@
 use v6.c;
 use NativeCall;
 
-unit module Graphics::TinyTIFF:ver<0.0.5>:auth<github:ryn1x>;
+unit module Graphics::TinyTIFF:ver<0.0.6>:auth<github:ryn1x>;
 
 #| open tiff file for reading, returns tiff pointer
 sub TinyTIFFReader_open( str $filename )
