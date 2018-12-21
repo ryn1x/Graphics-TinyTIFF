@@ -114,7 +114,7 @@ SUBROUTINES
 
 ```perl6
 sub TinyTIFFReader_open(
-    str $filename is rw
+    str $filename
 ) returns NativeCall::Types::Pointer
 ```
 
@@ -267,7 +267,7 @@ return last error message
 
 ```perl6
 sub TinyTIFFWriter_open(
-    str $filename is rw,
+    str $filename,
     uint16 $bits-per-sample,
     uint32 $width,
     uint32 $height
@@ -322,7 +322,7 @@ writes row-major image data to a tiff file
 ```perl6
 sub TinyTIFFWriter_close(
     NativeCall::Types::Pointer $tiff-file,
-    str $image-description is rw
+    str $image-description
 ) returns Mu
 ```
 

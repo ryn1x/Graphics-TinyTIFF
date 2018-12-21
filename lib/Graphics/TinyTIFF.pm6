@@ -1,10 +1,10 @@
 use v6.c;
 use NativeCall;
 
-unit module Graphics::TinyTIFF:ver<0.0.4>:auth<github:ryn1x>;
+unit module Graphics::TinyTIFF:ver<0.0.5>:auth<github:ryn1x>;
 
 #| open tiff file for reading, returns tiff pointer
-sub TinyTIFFReader_open( str $filename is rw )
+sub TinyTIFFReader_open( str $filename )
     returns Pointer is native('tinytiff') is export { * }
 
 #| read data from current frame into supplied buffer
@@ -64,7 +64,7 @@ sub TinyTIFFReader_getLastError( Pointer $tiff )
     returns str is native('tinytiff') is export { * }
 
 #| create a new tiff file, returns tiff-file pointer
-sub TinyTIFFWriter_open( str $filename is rw, uint16 $bits-per-sample, uint32 $width, uint32 $height )
+sub TinyTIFFWriter_open( str $filename, uint16 $bits-per-sample, uint32 $width, uint32 $height )
     returns Pointer is native('tinytiff') is export { * }
 
 #| get max size for image descrition
@@ -84,5 +84,5 @@ sub TinyTIFFWriter_writeImageVoid( Pointer $tiff-file, CArray $sample-data is rw
     is native('tinytiff') is export { * }
 
 #| close the tiff and write image description to first frame
-sub TinyTIFFWriter_close( Pointer $tiff-file, str $image-description is rw )
+sub TinyTIFFWriter_close( Pointer $tiff-file, str $image-description )
     is native('tinytiff') is export { * }
