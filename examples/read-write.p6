@@ -14,7 +14,7 @@ my $height = TinyTIFFReader_getHeight($tiff);
 my $description = TinyTIFFReader_getImageDescription($tiff);
 
 my $size = $width * $height;
-my @sample-data := buf8.allocate($size);
+my @sample-data := CArray[uint8].allocate($size);
 
 TinyTIFFReader_getSampleData($tiff, @sample-data, 0);
 

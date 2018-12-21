@@ -1,14 +1,14 @@
 use v6.c;
 use NativeCall;
 
-unit module Graphics::TinyTIFF:ver<0.0.3>:auth<github:ryn1x>;
+unit module Graphics::TinyTIFF:ver<0.0.4>:auth<github:ryn1x>;
 
 #| open tiff file for reading, returns tiff pointer
 sub TinyTIFFReader_open( str $filename is rw )
     returns Pointer is native('tinytiff') is export { * }
 
 #| read data from current frame into supplied buffer
-sub TinyTIFFReader_getSampleData( Pointer $tiff, Blob $buf is rw, uint16 $sample )
+sub TinyTIFFReader_getSampleData( Pointer $tiff, CArray $sample-data is rw, uint16 $sample )
     returns int32 is native('tinytiff') is export { * }
 
 #| close the tiff file
@@ -70,17 +70,17 @@ sub TinyTIFFWriter_open( str $filename is rw, uint16 $bits-per-sample, uint32 $w
 #| get max size for image descrition
 sub TinyTIFFWriter_getMaxDescriptionTextSize()
     returns int32 is native('tinytiff') is export { * }
-  
+
 #| writes row-major image data to a tiff file
-sub TinyTIFFWriter_writeImageDouble( Pointer $tiff-file , Blob is rw )
+sub TinyTIFFWriter_writeImageDouble( Pointer $tiff-file, CArray $sample-data is rw )
     is native('tinytiff') is export { * }
 
 #| writes row-major image data to a tiff file
-sub TinyTIFFWriter_writeImageFloat( Pointer $tiff-file, Blob is rw )
+sub TinyTIFFWriter_writeImageFloat( Pointer $tiff-file, CArray $sample-data is rw )
     is native('tinytiff') is export { * }
 
 #| writes row-major image data to a tiff file
-sub TinyTIFFWriter_writeImageVoid( Pointer $tiff-file, Blob is rw )
+sub TinyTIFFWriter_writeImageVoid( Pointer $tiff-file, CArray $sample-data is rw )
     is native('tinytiff') is export { * }
 
 #| close the tiff and write image description to first frame

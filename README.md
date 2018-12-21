@@ -54,7 +54,7 @@ my $height = TinyTIFFReader_getHeight($tiff);
 my $description = TinyTIFFReader_getImageDescription($tiff);
 
 my $size = $width * $height;
-my @sample-data := buf8.allocate($size);
+my @sample-data := CArray[uint8].allocate($size);
 
 TinyTIFFReader_getSampleData($tiff, @sample-data, 0);
 
@@ -90,7 +90,6 @@ print qq:to/END/;
     was error?        -> $was-error
     description size  -> $description-size
     END
-
 ```
 
 Output:
@@ -107,7 +106,6 @@ success?          -> True
 was error?        -> False
 description size  -> 1024
 ```
-
 
 SUBROUTINES
 ========
@@ -127,7 +125,7 @@ open tiff file for reading, returns tiff pointer
 ```perl6
 sub TinyTIFFReader_getSampleData(
     NativeCall::Types::Pointer $tiff,
-    Blob $buf is rw,
+    NativeCall::Types::CArray $sample-data is rw,
     uint16 $sample
 ) returns int32
 ```
@@ -291,7 +289,7 @@ get max size for image descrition
 ```perl6
 sub TinyTIFFWriter_writeImageDouble(
     NativeCall::Types::Pointer $tiff-file,
-    Blob $ is rw
+    NativeCall::Types::CArray $sample-data is rw
 ) returns Mu
 ```
 
@@ -302,7 +300,7 @@ writes row-major image data to a tiff file
 ```perl6
 sub TinyTIFFWriter_writeImageFloat(
     NativeCall::Types::Pointer $tiff-file,
-    Blob $ is rw
+    NativeCall::Types::CArray $sample-data is rw
 ) returns Mu
 ```
 
@@ -313,7 +311,7 @@ writes row-major image data to a tiff file
 ```perl6
 sub TinyTIFFWriter_writeImageVoid(
     NativeCall::Types::Pointer $tiff-file,
-    Blob $ is rw
+    NativeCall::Types::CArray $sample-data is rw
 ) returns Mu
 ```
 
@@ -329,8 +327,6 @@ sub TinyTIFFWriter_close(
 ```
 
 close the tiff and write image description to first frame
-
-
 
 COPYRIGHT AND LICENSE
 =====================

@@ -6,7 +6,7 @@ use Graphics::TinyTIFF;
 my $dir = $?FILE.IO.dirname;
 my $in = $dir.IO.add('cell.tif').Str;
 my $out = $dir.IO.add('cell2.tif').Str;
-my Pointer $tiff-r;
+my $tiff-r;
 my $tiff-w;
 my $width;
 my $height;
@@ -25,7 +25,7 @@ lives-ok { TinyTIFFReader_getImageDescription($tiff-r) };
 lives-ok { TinyTIFFReader_getLastError($tiff-r) };
 
 $size = $width * $height;
-@sample-data := buf8.allocate($size);
+@sample-data := CArray[uint8].allocate($size);
 
 lives-ok { TinyTIFFReader_getSampleData($tiff-r, @sample-data, 0) };
 lives-ok { TinyTIFFReader_getSampleFormat($tiff-r) };
